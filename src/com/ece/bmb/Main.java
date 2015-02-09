@@ -45,6 +45,7 @@ public class Main extends Application {
 	private View v;	
 	
 
+
 	public void start(Stage primaryStage) {
 
 		v = new View(primaryStage);
@@ -55,6 +56,7 @@ public class Main extends Application {
 		launch(args);
 
 	}
+
 
 	public void doBST(int nbThread, int nbWord) throws IOException
 	{
@@ -86,7 +88,7 @@ public class Main extends Application {
 		PrintWriter writer = new PrintWriter(name + ".dot");
 		writer.println(rbtree.toDOT(name));
 		writer.close();
-		ProcessBuilder builder = new ProcessBuilder("dot", "-Tpdf", "-o", name + ".pdf", name + ".dot");
+		ProcessBuilder builder = new ProcessBuilder("C:/Program Files (x86)/Graphviz2.38/bin/dot.exe", "-Tpdf", "-o", name + ".pdf", name + ".dot");
 		builder.start();
 		System.out.println(rbtree.isCorrect(rbtree.getRoot()));
 	}
