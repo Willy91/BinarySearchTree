@@ -28,30 +28,19 @@ package com.ece.bmb;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
   
   public static final void main(String[] args) throws IOException {
+	RandomWordGenerator wordGen = new RandomWordGenerator(100);
+	ExecutorService ex = Executors.newFixedThreadPool(2);
+	BinarySearchTree<String> rbtree = new BinarySearchTree<>();
+	for(String randString : wordGen) {
+		ex.submit(new BSTAdder(rbtree, randString));
+	}
     String name = "rbtree";
-    BinarySearchTree<String> rbtree = new BinarySearchTree<>();
-    
-   /* rbtree.add(10);
-    rbtree.add(15);
-    rbtree.add(8);
-    rbtree.add(12);
-    rbtree.add(4);
-    rbtree.add(9);*/
-    rbtree.add("alex");
-    rbtree.add("dédé");
-    rbtree.add("dada");
-    rbtree.add("aa");
-
-
-
-    rbtree.add("willou");
-
-    rbtree.add("stephou");
-
 
     PrintWriter writer = new PrintWriter(name + ".dot");
     writer.println(rbtree.toDOT(name));
