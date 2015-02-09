@@ -26,25 +26,25 @@ public class View {
 	private Stage primaryStage;
 	private Main ctrl;
 	
-	public NumberAxis x = new NumberAxis (1 , 4 , 1);
+	public NumberAxis x = new NumberAxis ();
 	public NumberAxis y = new NumberAxis ();
 
-	public ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList(
-			 new XYChart . Data < >(1 , 20) ,
-			 new XYChart . Data < >(2 , 14) ,
-			 new XYChart . Data < >(3 , 6) ,
-			 new XYChart . Data < >(4 , 3.1));
+	public ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList();
 	
-	public ObservableList < XYChart . Series < Number , Number > > series =
-			FXCollections . observableArrayList (
-			new XYChart . Series < >( data ));
+	public ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
 			
 	
 	public void drawGraph(ArrayList<Long> times){
 		
-		data = FXCollections.observableArrayList(
-				);
-				
+		System.out.println(times.size());
+		
+		for(int i=0; i<times.size();i++){
+			data.add(new XYChart . Data < >(i , times.get(i)));
+		}
+		
+		x = new NumberAxis(1,times.size(),1);
+		series.add(new XYChart . Series < >( data ));
+		
 	}
 
 	public View(Stage primaryStage){
