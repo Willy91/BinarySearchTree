@@ -33,13 +33,26 @@ public class Main {
   
   public static final void main(String[] args) throws IOException {
     String name = "rbtree";
-    BinarySearchTree<Integer> rbtree = new BinarySearchTree<>();
-    rbtree.add(10);
+    BinarySearchTree<String> rbtree = new BinarySearchTree<>();
+    
+   /* rbtree.add(10);
     rbtree.add(15);
     rbtree.add(8);
     rbtree.add(12);
     rbtree.add(4);
-    rbtree.add(9);
+    rbtree.add(9);*/
+    rbtree.add("alex");
+    rbtree.add("dédé");
+    rbtree.add("dada");
+    rbtree.add("aa");
+
+
+
+    rbtree.add("willou");
+
+    rbtree.add("stephou");
+
+
     PrintWriter writer = new PrintWriter(name + ".dot");
     writer.println(rbtree.toDOT(name));
     writer.close();

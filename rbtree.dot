@@ -1,0 +1,7 @@
+graph rbtree {
+alex -- aa
+alex -- dédé;
+dédé -- dada
+dédé -- willou;
+willou -- stephou
+}
