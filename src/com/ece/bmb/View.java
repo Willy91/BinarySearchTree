@@ -25,26 +25,27 @@ public class View {
 
 	private Stage primaryStage;
 	private Main ctrl;
-	
+
 	public NumberAxis x = new NumberAxis ();
 	public NumberAxis y = new NumberAxis ();
 
 	public ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList();
-	
+
 	public ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
-			
-	
+
+
 	public void drawGraph(ArrayList<Long> times){
-		
-		System.out.println(times.size());
-		
+
+		System.out.println("Size time: " +times.size());
+
 		for(int i=0; i<times.size();i++){
 			data.add(new XYChart . Data < >(i , times.get(i)));
 		}
-		
+
 		x = new NumberAxis(1,times.size(),1);
+		//test = new NumberAxis()
 		series.add(new XYChart . Series < >( data ));
-		
+
 	}
 
 	public View(Stage primaryStage){
@@ -78,18 +79,19 @@ public class View {
 
 		HBox hbTop = new HBox();
 		hbTop.getChildren().addAll(labelNbValue,nbValue,labelMaxThread, maxThread,launchBenchmark);
-		
+
 
 		LineChart < Number , Number > chart = new LineChart < >(x , y , series);
-		chart.setTitle("Time according to thread number ");
 		
+		chart.setTitle("Time according to thread number ");
+
 		Label progressLabel = new Label("Progress");
 		ProgressBar pb = new ProgressBar(0.6);
 		ProgressIndicator pi = new ProgressIndicator(0.6);
-		
+
 		HBox hbBottom = new HBox();
 		hbBottom.getChildren().addAll(progressLabel,pi,pb);
-		
+
 		((VBox) vb.getRoot()).getChildren().addAll(hbTop,chart,hbBottom);
 
 		primaryStage.setScene(vb);

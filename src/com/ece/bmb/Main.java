@@ -79,16 +79,16 @@ public class Main extends Application {
 			
 			times.add(time);
 		}
-		System.out.println(times.size());
 		
-		//v.drawGraph(times);
+		
+		v.drawGraph(times);
 
 		String name = "rbtree";
 
 		PrintWriter writer = new PrintWriter(name + ".dot");
 		writer.println(rbtree.toDOT(name));
 		writer.close();
-		ProcessBuilder builder = new ProcessBuilder("C:/Program Files (x86)/Graphviz2.38/bin/dot.exe", "-Tpdf", "-o", name + ".pdf", name + ".dot");
+		ProcessBuilder builder = new ProcessBuilder("dot", "-Tpdf", "-o", name + ".pdf", name + ".dot");
 		builder.start();
 		System.out.println(rbtree.isCorrect(rbtree.getRoot()));
 	}
