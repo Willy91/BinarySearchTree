@@ -29,6 +29,8 @@ package com.ece.bmb;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.ece.bmb.View;
 
@@ -48,14 +50,14 @@ public class Main extends Application {
 	}
   
   public static final void main(String[] args) throws IOException {
+	RandomWordGenerator wordGen = new RandomWordGenerator(100);
+	ExecutorService ex = Executors.newFixedThreadPool(2);
+	BinarySearchTree<String> rbtree = new BinarySearchTree<>();
+	for(String randString : wordGen) {
+		ex.submit(new BSTAdder(rbtree, randString));
+	}
     String name = "rbtree";
-    BinarySearchTree<Integer> rbtree = new BinarySearchTree<>();
-    rbtree.add(10);
-    rbtree.add(15);
-    rbtree.add(8);
-    rbtree.add(12);
-    rbtree.add(4);
-    rbtree.add(9);
+
     PrintWriter writer = new PrintWriter(name + ".dot");
     writer.println(rbtree.toDOT(name));
     writer.close();

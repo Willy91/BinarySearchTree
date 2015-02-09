@@ -46,7 +46,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
    * @return true if the element has been correctly added and false if it is
    *         already present
    */
-  public boolean add(E e) {
+  public synchronized boolean add(E e) {
     BinarySearchNode<E> y = null;
     BinarySearchNode<E> x = getRoot();
     while (x != null) {
