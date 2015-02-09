@@ -1,5 +1,7 @@
 package com.ece.bmb;
 
+
+import java.util.ArrayList;
 import java.io.IOException;
 
 import javafx.collections.FXCollections;
@@ -24,20 +26,26 @@ public class View {
 	private Stage primaryStage;
 	private Main ctrl;
 	
-	NumberAxis x = new NumberAxis (1 , 4 , 1);
-	NumberAxis y = new NumberAxis ();
+	public NumberAxis x = new NumberAxis ();
+	public NumberAxis y = new NumberAxis ();
 
-	ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList(
-			 new XYChart . Data < >(1 , 20) ,
-			 new XYChart . Data < >(2 , 14) ,
-			 new XYChart . Data < >(3 , 6) ,
-			 new XYChart . Data < >(4 , 3.1));
+	public ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList();
 	
-	ObservableList < XYChart . Series < Number , Number > > series =
-			FXCollections . observableArrayList (
-			new XYChart . Series < >( data ));
+	public ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
 			
-
+	
+	public void drawGraph(ArrayList<Long> times){
+		
+		System.out.println(times.size());
+		
+		for(int i=0; i<times.size();i++){
+			data.add(new XYChart . Data < >(i , times.get(i)));
+		}
+		
+		x = new NumberAxis(1,times.size(),1);
+		series.add(new XYChart . Series < >( data ));
+		
+	}
 
 	public View(Stage primaryStage){
 		this.primaryStage=primaryStage;
@@ -71,7 +79,7 @@ public class View {
 		HBox hbTop = new HBox();
 		hbTop.getChildren().addAll(labelNbValue,nbValue,labelMaxThread, maxThread,launchBenchmark);
 		
-		
+
 		LineChart < Number , Number > chart = new LineChart < >(x , y , series);
 		chart.setTitle("Time according to thread number ");
 		
