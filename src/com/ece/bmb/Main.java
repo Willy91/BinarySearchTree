@@ -42,6 +42,7 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 	
 	private View v;	
+	private static int poolSize;
 	
 	public void start(Stage primaryStage) {
 
@@ -51,7 +52,7 @@ public class Main extends Application {
   
   public static final void main(String[] args) throws IOException {
 	RandomWordGenerator wordGen = new RandomWordGenerator(100);
-	ExecutorService ex = Executors.newFixedThreadPool(2);
+	ExecutorService ex = Executors.newFixedThreadPool(poolSize);
 	BinarySearchTree<String> rbtree = new BinarySearchTree<>();
 	for(String randString : wordGen) {
 		ex.submit(new BSTAdder(rbtree, randString));
