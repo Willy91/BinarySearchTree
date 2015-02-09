@@ -47,6 +47,7 @@ public class Main {
     writer.close();
     ProcessBuilder builder = new ProcessBuilder("dot", "-Tpdf", "-o", name + ".pdf", name + ".dot");
     builder.start();
+    System.out.println(rbtree.isCorrect(rbtree.getRoot()));
   }
   
 }

@@ -74,7 +74,23 @@ public class BinarySearchTree<E extends Comparable<E>> {
     return true;
   }
   
-  private BinarySearchNode<E> getRoot() {
+  public boolean isCorrect(BinarySearchNode<E> current){
+	  if(current.getRightChild()!=null && current.getLeftChild()!=null){
+		  if(current.getRightChild().getKey().compareTo(current.getLeftChild().getKey())<0 && isCorrect(current.getRightChild()) && 
+				  isCorrect(current.getRightChild())){
+			  return true;
+		  }
+		  else{
+			  return false;
+		  }
+	  }
+	  else{
+		  return true;
+	  }
+	  
+  }
+  
+  public BinarySearchNode<E> getRoot() {
     return root;
   }
   
@@ -118,7 +134,7 @@ public class BinarySearchTree<E extends Comparable<E>> {
       this.key = key;
     }
     
-    private E getKey() {
+    public E getKey() {
       return key;
     }
     
