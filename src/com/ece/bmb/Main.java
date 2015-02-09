@@ -26,10 +26,26 @@
 
 package com.ece.bmb;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class Main {
+import com.ece.bmb.View;
+
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+public class Main extends Application {
+	
+	private View v;	
+	
+	public void start(Stage primaryStage) {
+
+		v = new View(primaryStage);
+		v.start();
+	}
   
   public static final void main(String[] args) throws IOException {
     String name = "rbtree";
@@ -43,8 +59,11 @@ public class Main {
     PrintWriter writer = new PrintWriter(name + ".dot");
     writer.println(rbtree.toDOT(name));
     writer.close();
-    ProcessBuilder builder = new ProcessBuilder("dot", "-Tpdf", "-o", name + ".pdf", name + ".dot");
+    ProcessBuilder builder = new ProcessBuilder("C:/Program Files (x86)/Graphviz2.38/bin/dot.exe", "-Tpdf", "-o", name + ".pdf", name + ".dot");
     builder.start();
+    
+    launch(args);
   }
+  
   
 }
