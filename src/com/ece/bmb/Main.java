@@ -26,49 +26,68 @@
 
 package com.ece.bmb;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import com.ece.bmb.View;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class Main extends Application {
-	
+
 	private View v;	
-	
+	ArrayList<Long> times = new ArrayList<Long>();
+
 	public void start(Stage primaryStage) {
 
 		v = new View(primaryStage);
-		v.start();
+		v.start(this);
 	}
-  
-  public static final void main(String[] args) throws IOException {
-	RandomWordGenerator wordGen = new RandomWordGenerator(100);
-	ExecutorService ex = Executors.newFixedThreadPool(2);
-	BinarySearchTree<String> rbtree = new BinarySearchTree<>();
-	for(String randString : wordGen) {
-		ex.submit(new BSTAdder(rbtree, randString));
+
+	public static final void main(String[] args) {
+		launch(args);
+
 	}
-    String name = "rbtree";
 
-    PrintWriter writer = new PrintWriter(name + ".dot");
-    writer.println(rbtree.toDOT(name));
-    writer.close();
-    ProcessBuilder builder = new ProcessBuilder("C:/Program Files (x86)/Graphviz2.38/bin/dot.exe", "-Tpdf", "-o", name + ".pdf", name + ".dot");
-    builder.start();
-    System.out.println(rbtree.isCorrect(rbtree.getRoot()));
+	public void doBST(int nbThread, int nbWord) throws IOException
+	{
+		RandomWordGenerator wordGen = new RandomWordGenerator(nbWord);
+		BinarySearchTree<String> rbtree = new BinarySearchTree<>();
+		
+		for(int i=1; i<=nbThread;i++) {
+			ExecutorService ex = Executors.newFixedThreadPool(i);
+			long time = 0;
+			
+			for(String randString : wordGen) {
+				Future<Duration> future = ex.submit(new BSTAdder(rbtree, randString));
+				try {
+					time += future.get().toNanos();
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			times.add(time);
+		}
+		
+		v.drawGraph(times);
 
-    
-    launch(args);
-    
-  }
-  
-  
+		String name = "rbtree";
+
+		PrintWriter writer = new PrintWriter(name + ".dot");
+		writer.println(rbtree.toDOT(name));
+		writer.close();
+		ProcessBuilder builder = new ProcessBuilder("dot", "-Tpdf", "-o", name + ".pdf", name + ".dot");
+		builder.start();
+		System.out.println(rbtree.isCorrect(rbtree.getRoot()));
+	}
+
+
 }
