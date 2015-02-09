@@ -43,7 +43,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	private View v;	
-	ArrayList<Long> times = new ArrayList<Long>();
+	
 
 	public void start(Stage primaryStage) {
 
@@ -60,6 +60,7 @@ public class Main extends Application {
 	{
 		RandomWordGenerator wordGen = new RandomWordGenerator(nbWord);
 		BinarySearchTree<String> rbtree = new BinarySearchTree<>();
+		ArrayList<Long> times = new ArrayList<Long>();
 		
 		for(int i=1; i<=nbThread;i++) {
 			ExecutorService ex = Executors.newFixedThreadPool(i);
@@ -76,8 +77,9 @@ public class Main extends Application {
 			
 			times.add(time);
 		}
+		System.out.println(times.size());
 		
-		v.drawGraph(times);
+		//v.drawGraph(times);
 
 		String name = "rbtree";
 

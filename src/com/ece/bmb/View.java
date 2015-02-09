@@ -58,9 +58,9 @@ public class View {
 			public void handle(ActionEvent event) {
 				if(!nbValue.getText().isEmpty() && !maxThread.getText().isEmpty()) {
 					int nbVal = Integer.parseInt(nbValue.getText());
-					int maxThr = Integer.parseInt(nbValue.getText());
+					int maxThr = Integer.parseInt(maxThread.getText());
 					try {
-						ctrl.doBST(nbVal, maxThr);
+						ctrl.doBST(maxThr, nbVal);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
