@@ -1,5 +1,7 @@
 package com.ece.bmb;
 
+import java.io.IOException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +22,7 @@ import javafx.stage.Stage;
 public class View {
 
 	private Stage primaryStage;
+	private Main ctrl;
 	
 	NumberAxis x = new NumberAxis (1 , 4 , 1);
 	NumberAxis y = new NumberAxis ();
@@ -41,7 +44,7 @@ public class View {
 
 	}
 
-	public void start() {
+	public void start(Main ctrl) {
 
 		Scene vb = new Scene(new VBox(),800,600);
 		Label labelNbValue = new Label("Number of Value to Add");
@@ -53,14 +56,22 @@ public class View {
 		launchBenchmark.setOnAction(new EventHandler<ActionEvent>() {		 
 			@Override
 			public void handle(ActionEvent event) {
-
+				if(!nbValue.getText().isEmpty() && !maxThread.getText().isEmpty()) {
+					int nbVal = Integer.parseInt(nbValue.getText());
+					int maxThr = Integer.parseInt(nbValue.getText());
+					try {
+						ctrl.doBST(nbVal, maxThr);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 
 		HBox hbTop = new HBox();
 		hbTop.getChildren().addAll(labelNbValue,nbValue,labelMaxThread, maxThread,launchBenchmark);
 		
-		series.setName("");
+		
 		LineChart < Number , Number > chart = new LineChart < >(x , y , series);
 		chart.setTitle("Time according to thread number ");
 		
