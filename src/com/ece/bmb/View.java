@@ -1,10 +1,5 @@
 package com.ece.bmb;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.ece.bmb.Main;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -31,10 +25,10 @@ public class View {
 	NumberAxis y = new NumberAxis ();
 
 	ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList(
-			 new XYChart . Data < >(1 , 10) ,
-			 new XYChart . Data < >(2 , 7) ,
-			 new XYChart . Data < >(3 , 5) ,
-			 new XYChart . Data < >(4 , 4.1));
+			 new XYChart . Data < >(1 , 20) ,
+			 new XYChart . Data < >(2 , 14) ,
+			 new XYChart . Data < >(3 , 6) ,
+			 new XYChart . Data < >(4 , 3.1));
 	
 	ObservableList < XYChart . Series < Number , Number > > series =
 			FXCollections . observableArrayList (
@@ -66,15 +60,16 @@ public class View {
 		HBox hbTop = new HBox();
 		hbTop.getChildren().addAll(labelNbValue,nbValue,labelMaxThread, maxThread,launchBenchmark);
 		
+		series.setName("");
 		LineChart < Number , Number > chart = new LineChart < >(x , y , series);
 		chart.setTitle("Time according to thread number ");
 		
-		
+		Label progressLabel = new Label("Progress");
 		ProgressBar pb = new ProgressBar(0.6);
 		ProgressIndicator pi = new ProgressIndicator(0.6);
 		
 		HBox hbBottom = new HBox();
-		hbBottom.getChildren().addAll(pi,pb);
+		hbBottom.getChildren().addAll(progressLabel,pi,pb);
 		
 		((VBox) vb.getRoot()).getChildren().addAll(hbTop,chart,hbBottom);
 
