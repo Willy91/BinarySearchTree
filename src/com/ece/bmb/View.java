@@ -2,6 +2,7 @@ package com.ece.bmb;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.IOException;
 
 import javafx.collections.FXCollections;
@@ -26,18 +27,20 @@ public class View {
 	private Stage primaryStage;
 	private Main ctrl;
 
-	public NumberAxis x = new NumberAxis ();
-	public NumberAxis y = new NumberAxis ();
+	private NumberAxis x = new NumberAxis ();
+	private NumberAxis y = new NumberAxis ();
+	private LineChart < Number , Number > chart;
+	private Scene vb;
 
-	public ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList();
+	private ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList();
 
-	public ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
+	private ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
 
 
 	public void drawGraph(ArrayList<Long> times){
 
 		System.out.println("Size time: " +times.size());
-
+		data.clear();
 		for(int i=0; i<times.size();i++){
 			data.add(new XYChart . Data < >(i , times.get(i)));
 		}
@@ -45,6 +48,11 @@ public class View {
 		x = new NumberAxis(1,times.size(),1);
 		//test = new NumberAxis()
 		series.add(new XYChart . Series < >( data ));
+				
+		chart.setData(series);
+//		chart = new LineChart<>(x, y,series);
+//		((VBox) vb.getRoot()).getChildren().remove(1);
+//		((VBox) vb.getRoot()).getChildren().add(1, chart);
 
 	}
 
@@ -55,7 +63,7 @@ public class View {
 
 	public void start(Main ctrl) {
 
-		Scene vb = new Scene(new VBox(),800,600);
+		vb = new Scene(new VBox(),800,600);
 		Label labelNbValue = new Label("Number of Value to Add");
 		TextField nbValue = new TextField();
 		Label labelMaxThread = new Label("Number of Thread");
@@ -80,8 +88,9 @@ public class View {
 		HBox hbTop = new HBox();
 		hbTop.getChildren().addAll(labelNbValue,nbValue,labelMaxThread, maxThread,launchBenchmark);
 
-
-		LineChart < Number , Number > chart = new LineChart < >(x , y , series);
+		//x.setAutoRanging(false);	
+		
+		chart = new LineChart < >(x , y , series);
 		
 		chart.setTitle("Time according to thread number ");
 
