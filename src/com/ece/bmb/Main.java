@@ -34,6 +34,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.LongStream;
+import java.util.stream.LongStream.Builder;
 
 import com.ece.bmb.View;
 
@@ -42,8 +44,9 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	private View v;	
+	private View v;
 	
+	private LongStream ls;
 
 
 	public void start(Stage primaryStage) {
@@ -63,26 +66,32 @@ public class Main extends Application {
 		RandomWordGenerator wordGen = new RandomWordGenerator(nbWord);
 		BinarySearchTree<String> rbtree = new BinarySearchTree<>();
 		ArrayList<Long> times = new ArrayList<Long>();
-		
+
 		for(int i=1; i<=nbThread;i++) {
 			ExecutorService ex = Executors.newFixedThreadPool(i);
+			Builder builder = LongStream.builder();
 			long time = 0;
 			v.updateProgressBar((float)i/nbThread);
 			for(String randString : wordGen) {
 				Future<Duration> future = ex.submit(new BSTAdder(rbtree, randString));
 				try {
-					time += future.get().toNanos();
+					builder.add(future.get().toNanos());
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
-				
 			}
+			
 			ex.shutdown();
 			
+			ls = builder.build();
+			time = (long) ls.average().getAsDouble()/i;
+			System.out.println("time: "+time);
 			times.add(time);
+
+
 		}
-		
-		
+
+
 		v.drawGraph(times);
 
 		String name = "rbtree";
@@ -90,7 +99,7 @@ public class Main extends Application {
 		PrintWriter writer = new PrintWriter(name + ".dot");
 		writer.println(rbtree.toDOT(name));
 		writer.close();
-		ProcessBuilder builder = new ProcessBuilder("C:/Program Files (x86)/Graphviz2.38/bin/dot.exe", "-Tpdf", "-o", name + ".pdf", name + ".dot");
+		ProcessBuilder builder = new ProcessBuilder("dot", "-Tpdf", "-o", name + ".pdf", name + ".dot");
 		builder.start();
 		System.out.println(rbtree.isCorrect(rbtree.getRoot()));
 	}

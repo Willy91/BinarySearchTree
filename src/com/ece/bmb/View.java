@@ -122,7 +122,6 @@ public class View {
 	public void updateProgressBar(float in){
 		System.out.println(in);
 		pb.setProgress((float)in);
-		//pb = new ProgressBar((float)in);
 		pi.setProgress((float)in);
 		
 	}
