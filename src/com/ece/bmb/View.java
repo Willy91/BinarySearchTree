@@ -34,27 +34,31 @@ public class View {
 
 	private ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList();
 
-	private ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
+	//private ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
 
+	XYChart.Series<Number, Number> series = new XYChart.Series();
 
 	public void drawGraph(ArrayList<Long> times){
 
+		series.getData().clear();
+		
 		System.out.println("Size time: " +times.size());
 		data.clear();
 		for(int i=0; i<times.size();i++){
 			data.add(new XYChart . Data < >(i+1 , times.get(i)));
+			series.getData().add(new XYChart.Data(i+1, times.get(i)));
 		}
 
 		x = new NumberAxis(1,times.size(),1);
-		//y.autoRangingProperty();
+		y.autoRangingProperty();
 		chart.getData().remove(series);
-		series.clear();
-		series.add(new XYChart . Series < >( data ));
+		//series.getData().add(new XYChart . Series < >( data ));
 		
 					
 		//((VBox) vb.getRoot()).getChildren().remove(1);
-		chart.setData(series);
-		chart = new LineChart<>(x, y,series);
+		//chart.setData(series);
+		chart = new LineChart<>(x, y);
+		chart.getData().add(series);
 		((VBox) vb.getRoot()).getChildren().add(1, chart);
 		((VBox) vb.getRoot()).getChildren().remove(2);
 
@@ -94,7 +98,7 @@ public class View {
 
 			
 		
-		chart = new LineChart < >(x , y , series);
+		chart = new LineChart < >(x , y);
 		
 		chart.setTitle("Time according to thread number ");
 
