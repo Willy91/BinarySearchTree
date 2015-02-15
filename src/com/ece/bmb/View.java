@@ -2,17 +2,15 @@ package com.ece.bmb;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.IOException;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -27,36 +25,25 @@ public class View {
 	private Stage primaryStage;
 	private Main ctrl;
 
-	private NumberAxis x = new NumberAxis (1,4,1);
-	private NumberAxis y = new NumberAxis ();
+	private NumberAxis x;
+	private NumberAxis y;
 	private LineChart < Number , Number > chart;
 	private Scene vb;
-
-	private ObservableList<XYChart . Data < Number , Number >> data =FXCollections.observableArrayList();
-
-	private ObservableList < XYChart . Series < Number , Number > > series = FXCollections . observableArrayList ();
+	private Series<Number, Number> series;
 
 
 	public void drawGraph(ArrayList<Long> times){
 
 		System.out.println("Size time: " +times.size());
-		data.clear();
+		series.getData().clear();
 		for(int i=0; i<times.size();i++){
-			data.add(new XYChart . Data < >(i+1 , times.get(i)));
+			series.getData().add(new XYChart.Data<Number,Number> (i+1 , times.get(i)));
 		}
-
-		x = new NumberAxis(1,times.size(),1);
-		//y.autoRangingProperty();
-		chart.getData().remove(series);
-		series.clear();
-		series.add(new XYChart . Series < >( data ));
 		
-					
-		//((VBox) vb.getRoot()).getChildren().remove(1);
-		chart.setData(series);
-		chart = new LineChart<>(x, y,series);
-		((VBox) vb.getRoot()).getChildren().add(1, chart);
-		((VBox) vb.getRoot()).getChildren().remove(2);
+		x.setUpperBound(times.size());		
+		
+		chart.getData().clear();
+		chart.getData().add(series);
 
 	}
 
@@ -72,6 +59,7 @@ public class View {
 		TextField nbValue = new TextField();
 		Label labelMaxThread = new Label("Number of Thread");
 		TextField maxThread = new TextField();	
+		series = new XYChart.Series<Number, Number>();
 
 		Button launchBenchmark = new Button("Launch Benchmark");
 		launchBenchmark.setOnAction(new EventHandler<ActionEvent>() {		 
@@ -93,8 +81,14 @@ public class View {
 		hbTop.getChildren().addAll(labelNbValue,nbValue,labelMaxThread, maxThread,launchBenchmark);
 
 			
+		x = new NumberAxis();
+		x.setAutoRanging(false);
+		x.setLowerBound(1);
+		x.setTickUnit(1);
 		
-		chart = new LineChart < >(x , y , series);
+		y = new NumberAxis();
+		y.setLabel("Time in ns");
+		chart = new LineChart < >(x , y);
 		
 		chart.setTitle("Time according to thread number ");
 
