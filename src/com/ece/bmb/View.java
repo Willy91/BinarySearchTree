@@ -31,20 +31,25 @@ public class View {
 	private Scene vb;
 
 	private Series<Number, Number> series;
+	
+	private long max=0;
 
 
 	public void drawGraph(ArrayList<Long> times){
 
 		series.getData().clear();
+		max=0;
 		
 		System.out.println("Size time: " +times.size());
 		series.getData().clear();
 		for(int i=0; i<times.size();i++){
 
 			series.getData().add(new XYChart.Data<Number,Number> (i+1 , times.get(i)));
+			if(max<times.get(i)) max=times.get(i);
 		}
 		
-		x.setUpperBound(times.size());		
+		x.setUpperBound(times.size());
+		y.setUpperBound(max);
 		
 		chart.getData().clear();
 		chart.getData().add(series);
@@ -91,6 +96,8 @@ public class View {
 		x.setTickUnit(1);
 
 		y = new NumberAxis();
+		y.setAutoRanging(false);
+		y.setTickUnit(500000);
 		y.setLabel("Time in ns");
 
 		chart = new LineChart < >(x , y);
