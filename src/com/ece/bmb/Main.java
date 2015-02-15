@@ -75,7 +75,9 @@ public class Main extends Application {
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
+				
 			}
+			ex.shutdown();
 			
 			times.add(time);
 		}
