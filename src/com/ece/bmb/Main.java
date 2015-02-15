@@ -67,7 +67,7 @@ public class Main extends Application {
 		for(int i=1; i<=nbThread;i++) {
 			ExecutorService ex = Executors.newFixedThreadPool(i);
 			long time = 0;
-			
+			v.updateProgressBar((float)i/nbThread);
 			for(String randString : wordGen) {
 				Future<Duration> future = ex.submit(new BSTAdder(rbtree, randString));
 				try {

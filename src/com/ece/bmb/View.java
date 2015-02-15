@@ -30,8 +30,8 @@ public class View {
 	private LineChart < Number , Number > chart;
 	private Scene vb;
 	private Series<Number, Number> series;
-
-
+	private ProgressBar pb;
+	private ProgressIndicator pi ;
 	public void drawGraph(ArrayList<Long> times){
 
 		System.out.println("Size time: " +times.size());
@@ -93,9 +93,8 @@ public class View {
 		chart.setTitle("Time according to thread number ");
 
 		Label progressLabel = new Label("Progress");
-		ProgressBar pb = new ProgressBar(0.6);
-		ProgressIndicator pi = new ProgressIndicator(0.6);
-
+		pb = new ProgressBar(0.0);
+		pi = new ProgressIndicator(0.0);
 		HBox hbBottom = new HBox();
 		hbBottom.getChildren().addAll(progressLabel,pi,pb);
 
@@ -103,5 +102,13 @@ public class View {
 
 		primaryStage.setScene(vb);
 		primaryStage.show();
+	}
+	
+	public void updateProgressBar(float in){
+		System.out.println(in);
+		pb.setProgress((float)in);
+		//pb = new ProgressBar((float)in);
+		pi.setProgress((float)in);
+		
 	}
 }
