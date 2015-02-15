@@ -27,7 +27,7 @@ public class View {
 	private Stage primaryStage;
 	private Main ctrl;
 
-	private NumberAxis x = new NumberAxis ();
+	private NumberAxis x = new NumberAxis (1,4,1);
 	private NumberAxis y = new NumberAxis ();
 	private LineChart < Number , Number > chart;
 	private Scene vb;
@@ -42,17 +42,21 @@ public class View {
 		System.out.println("Size time: " +times.size());
 		data.clear();
 		for(int i=0; i<times.size();i++){
-			data.add(new XYChart . Data < >(i , times.get(i)));
+			data.add(new XYChart . Data < >(i+1 , times.get(i)));
 		}
 
 		x = new NumberAxis(1,times.size(),1);
-		//test = new NumberAxis()
+		//y.autoRangingProperty();
+		chart.getData().remove(series);
+		series.clear();
 		series.add(new XYChart . Series < >( data ));
-				
+		
+					
+		//((VBox) vb.getRoot()).getChildren().remove(1);
 		chart.setData(series);
-//		chart = new LineChart<>(x, y,series);
-//		((VBox) vb.getRoot()).getChildren().remove(1);
-//		((VBox) vb.getRoot()).getChildren().add(1, chart);
+		chart = new LineChart<>(x, y,series);
+		((VBox) vb.getRoot()).getChildren().add(1, chart);
+		((VBox) vb.getRoot()).getChildren().remove(2);
 
 	}
 
@@ -88,7 +92,7 @@ public class View {
 		HBox hbTop = new HBox();
 		hbTop.getChildren().addAll(labelNbValue,nbValue,labelMaxThread, maxThread,launchBenchmark);
 
-		//x.setAutoRanging(false);	
+			
 		
 		chart = new LineChart < >(x , y , series);
 		
