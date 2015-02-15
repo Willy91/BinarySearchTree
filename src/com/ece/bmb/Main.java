@@ -43,7 +43,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	private View v;	
-	ArrayList<Long> times = new ArrayList<Long>();
+	
 
 
 	public void start(Stage primaryStage) {
@@ -62,6 +62,7 @@ public class Main extends Application {
 	{
 		RandomWordGenerator wordGen = new RandomWordGenerator(nbWord);
 		BinarySearchTree<String> rbtree = new BinarySearchTree<>();
+		ArrayList<Long> times = new ArrayList<Long>();
 		
 		for(int i=1; i<=nbThread;i++) {
 			ExecutorService ex = Executors.newFixedThreadPool(i);
@@ -74,10 +75,13 @@ public class Main extends Application {
 				} catch (InterruptedException | ExecutionException e) {
 					e.printStackTrace();
 				}
+				
 			}
+			ex.shutdown();
 			
 			times.add(time);
 		}
+		
 		
 		v.drawGraph(times);
 
@@ -86,7 +90,7 @@ public class Main extends Application {
 		PrintWriter writer = new PrintWriter(name + ".dot");
 		writer.println(rbtree.toDOT(name));
 		writer.close();
-		ProcessBuilder builder = new ProcessBuilder("C:/Program Files (x86)/Graphviz2.38/bin/dot.exe", "-Tpdf", "-o", name + ".pdf", name + ".dot");
+		ProcessBuilder builder = new ProcessBuilder("dot", "-Tpdf", "-o", name + ".pdf", name + ".dot");
 		builder.start();
 		System.out.println(rbtree.isCorrect(rbtree.getRoot()));
 	}
